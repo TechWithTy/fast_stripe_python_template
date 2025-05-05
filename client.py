@@ -14,8 +14,8 @@ def register_stripe_startup(app: FastAPI) -> None:
     Register startup logic to initialize the StripeClient singleton.
     """
 
-    @app.on_event("startup")
-    async def startup_event() -> None:
+    @app.lifespan
+    async def lifespan(_app: FastAPI):
         global _stripe_client
         try:
             _stripe_client = get_stripe_client(StripeSettings.STRIPE_SECRET_KEY)
@@ -23,6 +23,7 @@ def register_stripe_startup(app: FastAPI) -> None:
         except Exception as e:
             logging.error(f"Failed to initialize StripeClient: {e}")
             raise
+        yield
 
 
 def get_stripe_client(settings: StripeSettings = Depends(StripeSettings)):
