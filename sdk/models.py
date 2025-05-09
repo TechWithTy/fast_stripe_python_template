@@ -67,7 +67,7 @@ class StripeSubscription(BaseModel):
 class ProgrammableCheckoutPayload(BaseModel):
     mode: str = Field(..., description="Checkout mode: subscription, payment, or setup")
     line_items: list[dict] = Field(
-        ..., description="List of line items for the checkout session"
+        ..., description="list of line items for the checkout session"
     )
     success_url: str = Field(..., description="URL to redirect after success")
     cancel_url: str = Field(..., description="URL to redirect after cancellation")

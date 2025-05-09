@@ -58,10 +58,10 @@ async def handle_stripe_exceptions(
     func,
     *,
     stripe_calls=None,
-    endpoint: str | None = None,
+    endpoint: str | None,
     logger=None,
-    current_user: dict | None = None,
-    stripe_id: str | None = None,
+    current_user: dict | None,
+    stripe_id: str | None,
     stripe_ERRORS=None,
 ):
     try:

@@ -1060,7 +1060,7 @@ class ProductManagementView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     def get(self, request):
-        """List all products with their prices"""
+        """list all products with their prices"""
         try:
             stripe_client = get_stripe_client()
             

@@ -8,7 +8,7 @@ from stripe import StripeClient
 # All functions raise RuntimeError on failure and log errors.
 
 def list_stripe_customers(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe customers using the Stripe SDK."""
+    """list Stripe customers using the Stripe SDK."""
     try:
         response = stripe.customers.list(limit=20)
         return list(response.auto_paging_iter())
@@ -18,7 +18,7 @@ def list_stripe_customers(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_subscriptions(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe subscriptions using the Stripe SDK."""
+    """list Stripe subscriptions using the Stripe SDK."""
     try:
         response = stripe.subscriptions.list(limit=20)
         return list(response.auto_paging_iter())
@@ -28,7 +28,7 @@ def list_stripe_subscriptions(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_plans(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe plans using the Stripe SDK."""
+    """list Stripe plans using the Stripe SDK."""
     try:
         response = stripe.plans.list(limit=20)
         return list(response.auto_paging_iter())
@@ -38,7 +38,7 @@ def list_stripe_plans(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_invoices(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe invoices using the Stripe SDK."""
+    """list Stripe invoices using the Stripe SDK."""
     try:
         response = stripe.invoices.list(limit=20)
         return list(response.auto_paging_iter())
@@ -48,7 +48,7 @@ def list_stripe_invoices(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_charges(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe charges using the Stripe SDK."""
+    """list Stripe charges using the Stripe SDK."""
     try:
         response = stripe.charges.list(limit=20)
         return list(response.auto_paging_iter())
@@ -58,7 +58,7 @@ def list_stripe_charges(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_products(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe products using the Stripe SDK."""
+    """list Stripe products using the Stripe SDK."""
     try:
         response = stripe.products.list(limit=20)
         return list(response.auto_paging_iter())
@@ -68,7 +68,7 @@ def list_stripe_products(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_payment_intents(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe payment intents using the Stripe SDK."""
+    """list Stripe payment intents using the Stripe SDK."""
     try:
         response = stripe.payment_intents.list(limit=20)
         return list(response.auto_paging_iter())
@@ -78,7 +78,7 @@ def list_stripe_payment_intents(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_refunds(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe refunds using the Stripe SDK."""
+    """list Stripe refunds using the Stripe SDK."""
     try:
         response = stripe.refunds.list(limit=20)
         return list(response.auto_paging_iter())
@@ -88,7 +88,7 @@ def list_stripe_refunds(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_balance_transactions(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe balance transactions using the Stripe SDK."""
+    """list Stripe balance transactions using the Stripe SDK."""
     try:
         response = stripe.balance_transactions.list(limit=20)
         return list(response.auto_paging_iter())
@@ -98,7 +98,7 @@ def list_stripe_balance_transactions(stripe: StripeClient) -> list[dict[str, Any
 
 
 def list_stripe_payouts(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe payouts using the Stripe SDK."""
+    """list Stripe payouts using the Stripe SDK."""
     try:
         response = stripe.payouts.list(limit=20)
         return list(response.auto_paging_iter())
@@ -108,7 +108,7 @@ def list_stripe_payouts(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_disputes(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe disputes using the Stripe SDK."""
+    """list Stripe disputes using the Stripe SDK."""
     try:
         response = stripe.disputes.list(limit=20)
         return list(response.auto_paging_iter())
@@ -118,7 +118,7 @@ def list_stripe_disputes(stripe: StripeClient) -> list[dict[str, Any]]:
 
 
 def list_stripe_events(stripe: StripeClient) -> list[dict[str, Any]]:
-    """List Stripe events using the Stripe SDK."""
+    """list Stripe events using the Stripe SDK."""
     try:
         response = stripe.events.list(limit=20)
         return list(response.auto_paging_iter())
