@@ -34,17 +34,19 @@ class StripePlan(BaseModel):
     updated_at: str
 
 
+from enum import Enum
+
+class StatusEnum(str, Enum):
+    ACTIVE = "active"
+    PAST_DUE = "past_due"
+    UNPAID = "unpaid"
+    CANCELED = "canceled"
+    INCOMPLETE = "incomplete"
+    INCOMPLETE_EXPIRED = "incomplete_expired"
+    TRIALING = "trialing"
+
 class StripeSubscription(BaseModel):
     """Store subscription information"""
-
-    class StatusEnum(str):
-        ACTIVE = "active"
-        PAST_DUE = "past_due"
-        UNPAID = "unpaid"
-        CANCELED = "canceled"
-        INCOMPLETE = "incomplete"
-        INCOMPLETE_EXPIRED = "incomplete_expired"
-        TRIALING = "trialing"
 
     user_id: str
     subscription_id: str
@@ -56,6 +58,44 @@ class StripeSubscription(BaseModel):
     livemode: bool = False
     created_at: str
     updated_at: str
+
+
+# --- SDK/Stripe Credit and Subscription Models ---
+from pydantic import ConfigDict
+
+class Credit(BaseModel):
+    """Credit allocation and response models for Stripe SDK/API usage"""
+    model_config = ConfigDict(extra="allow")
+
+    class CreditAllocationRequest(BaseModel):
+        user_id: str
+        amount: int
+        reason: str
+        subscription_id: str | None = None
+
+    class CreditAllocationResult(BaseModel):
+        success: bool
+        message: str
+        new_balance: int | None = None
+
+
+class Subscription(BaseModel):
+    """Minimal Subscription model for SDK/API usage"""
+    model_config = ConfigDict(extra="allow")
+    subscription_id: str
+    user_id: str
+    plan_id: str
+    status: str
+
+    class SubscriptionChangeRequest(BaseModel):
+        user_id: str
+        old_plan_name: str
+        new_plan_name: str
+        subscription_id: str
+
+    class SubscriptionChangeResult(BaseModel):
+        success: bool
+        message: str
 
     def get_dashboard_url(self) -> str:
         """Get URL to view this subscription in Stripe dashboard"""

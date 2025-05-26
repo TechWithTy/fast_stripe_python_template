@@ -1,12 +1,12 @@
 import logging
 from datetime import datetime, timezone
 
-from _schemas import Credit, Subscription
+from ..models.models import Credit, Subscription
 from fastapi import Depends
 from pydantic import BaseModel
 from stripe import StripeClient
 
-from .client import get_stripe_client
+from ..client import get_stripe_client
 
 # Import your Stripe models (for type hints and validation)
 
