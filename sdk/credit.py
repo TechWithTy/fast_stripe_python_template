@@ -1,12 +1,47 @@
 import logging
 from datetime import datetime, timezone
+from typing import Dict, Any, Optional
 
-from _schemas import Credit, Subscription
 from fastapi import Depends
 from pydantic import BaseModel
-from stripe import StripeClient
 
-from .client import get_stripe_client
+try:
+    from stripe import StripeClient
+except ImportError:
+    StripeClient = Any  # Fallback for testing
+
+from ..client import get_stripe_client
+
+# Define Credit schemas
+class CreditAllocationRequest(BaseModel):
+    user_id: str
+    amount: int
+    description: str
+    subscription_id: Optional[str] = None
+
+class CreditAllocationResult(BaseModel):
+    user_id: str
+    amount: int
+    description: str
+    subscription_id: Optional[str] = None
+    allocated_at: datetime
+    status: str
+    details: Dict[str, Any] = {}
+
+# Define Subscription schemas  
+class SubscriptionChangeRequest(BaseModel):
+    user_id: str
+    old_plan_name: str
+    new_plan_name: str
+    subscription_id: str
+
+class SubscriptionChangeResult(BaseModel):
+    user_id: str
+    old_plan_name: str
+    new_plan_name: str
+    subscription_id: str
+    status: str
+    details: Dict[str, Any] = {}
 
 # Import your Stripe models (for type hints and validation)
 
@@ -14,10 +49,10 @@ logger = logging.getLogger(__name__)
 
 
 async def allocate_subscription_credits(
-    req: Credit.CreditAllocationRequest,
-    stripe: StripeClient = Depends(get_stripe_client),
+    req: CreditAllocationRequest,
+    stripe: Optional[StripeClient] = None,
     # db_session: AsyncSession = Depends(get_db_session),  # Uncomment and implement for real DB
-) -> Credit.CreditAllocationResult:
+) -> CreditAllocationResult:
     """
     Allocate credits to a user and record the transaction.
     Uses the Stripe client for any necessary Stripe-side operations.
@@ -33,7 +68,7 @@ async def allocate_subscription_credits(
         # TODO: Add real Stripe or DB logic as needed
         allocated_at = datetime.now(timezone.utc)
         logger.info(f"Successfully allocated credits to user {req.user_id}")
-        return Credit.CreditAllocationResult(
+        return CreditAllocationResult(
             user_id=req.user_id,
             amount=req.amount,
             description=req.description,
@@ -97,8 +132,8 @@ async def map_plan_to_subscription_tier(
 
 
 async def handle_subscription_change(
-    req: Subscription.SubscriptionChangeRequest,
-) -> Subscription.SubscriptionChangeResult:
+    req: SubscriptionChangeRequest,
+) -> SubscriptionChangeResult:
     """
     Handle credit changes when user changes subscription plan.
     """
@@ -116,7 +151,7 @@ async def handle_subscription_change(
         if credit_adjustment > 0:
             # This is an upgrade - give additional credits
             description = f"Additional credits for upgrading to {req.new_plan_name}"
-            allocation_req = Credit.CreditAllocationRequest(
+            allocation_req = CreditAllocationRequest(
                 user_id=req.user_id,
                 amount=credit_adjustment,
                 description=description,
@@ -141,7 +176,7 @@ async def handle_subscription_change(
             # Update user profile with new subscription tier
             pass
 
-        return Subscription.SubscriptionChangeResult(
+        return SubscriptionChangeResult(
             user_id=req.user_id,
             old_plan_name=req.old_plan_name,
             new_plan_name=req.new_plan_name,
